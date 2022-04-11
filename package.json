@@ -15,7 +15,8 @@
     "format:check": "prettier --check .",
     "lint": "eslint ./",
     "lint:fix": "eslint ./ --fix",
-    "type-check": "tsc --noemit"
+    "type-check": "tsc --noemit",
+    "pm2_start": "pm2 start ./ecosystem.config.cjs"
   },
   "dependencies": {
     "@discordx/importer": "^1.1.2",

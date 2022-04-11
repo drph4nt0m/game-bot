@@ -10,19 +10,38 @@ export default class TruthAndDare {
     //
   }
 
-  public static changeRating(rating: QuestionRating) {
+  public static changeRating(rating: QuestionRating): void {
     this.rating = rating;
   }
 
-  public static async getQuestion(user: string, type: QuestionType): Promise<{ id: number, question: string, type: QuestionType, rating: string }> {
+  public static async getQuestion(
+    user: string,
+    type: QuestionType
+  ): Promise<{
+    id: number;
+    question: string;
+    type: QuestionType;
+    rating: string;
+  }> {
     try {
-      if (!this.completedQuestions[user]) this.completedQuestions[user] = [];
-      const {
-        id,
-        text
-      } = await api<ITruthAndDareApiResponse>(`https://truthordarequestions.app/api/${type}/${this.rating}?exclude=${this.completedQuestions[user].join(",")}`);
+      if (!this.completedQuestions[user]) {
+        this.completedQuestions[user] = [];
+      }
+      const { id, text } = await api<ITruthAndDareApiResponse>(
+        `https://truthordarequestions.app/api/${type}/${
+          this.rating
+        }?exclude=${this.completedQuestions[user].join(",")}`
+      );
       this.completedQuestions[user].push(id);
-      return { id, question: text, type, rating: Object.keys(QuestionRating).find((r) => QuestionRating[r] === this.rating) || 'Unknown' };
+      return {
+        id,
+        question: text,
+        type,
+        rating:
+          Object.keys(QuestionRating).find(
+            (r) => QuestionRating[r] === this.rating
+          ) || "Unknown",
+      };
     } catch (error: any) {
       console.log(error);
       throw new Error(error.message);
