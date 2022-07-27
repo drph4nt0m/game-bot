@@ -1,1 +1,1 @@
-# Discord Game Bot
+# Discord Truth & Date Game Bot
