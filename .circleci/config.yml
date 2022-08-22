@@ -20,11 +20,13 @@ workflows:
   node-build:
     jobs:
       - node-build
-  build-and-publish-docker-image:
+  deploy:
     jobs:
+      - fetch-version:
+          command: echo "export VERSION=$(node -p \"require('./package.json').version\")"
       - docker/publish:
           image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-          tag: $CIRCLE_BRANCH # Gives a tag of the branch name to the docker image
+          tag: $VERSION # Gives a tag of the branch name to the docker image
           filters:
             branches:
               only:
