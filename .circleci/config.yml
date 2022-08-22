@@ -15,13 +15,6 @@ jobs:
       - run:
           name: Run build
           command: npm run build
-          
-  fetch-version:
-    docker:
-      - image: cimg/node:16.10
-    steps:
-      - checkout
-      - run: export VERSION=$(node -p "require('./package.json').version")
 
 workflows:
   node-build:
@@ -29,10 +22,9 @@ workflows:
       - node-build
   deploy:
     jobs:
-      - fetch-version
       - docker/publish:
           image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-          tag: $VERSION # Gives a tag of the branch name to the docker image
+          tag: $CIRCLE_BRANCH.$CIRCLE_BUILD_NUM latest # Gives a tag of the branch name to the docker image
           filters:
             branches:
               only:
