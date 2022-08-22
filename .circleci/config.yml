@@ -21,7 +21,7 @@ jobs:
       - image: cimg/node:16.10
     steps:
       - checkout
-      - run: echo "export VERSION=$(cat package.json | sed -n 's/.*version": \"\(.*\)\".*/\1/p')"
+      - run: export VERSION=$(node -p "require('./package.json').version")
 
 workflows:
   node-build:
