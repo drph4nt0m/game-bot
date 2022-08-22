@@ -22,7 +22,7 @@ workflows:
       - node-build
   deploy:
     jobs:
-      - fetch-version:
+      - run:
           command: echo "export VERSION=$(node -p \"require('./package.json').version\")"
       - docker/publish:
           image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
