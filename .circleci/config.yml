@@ -3,21 +3,23 @@ version: 2.1
 orbs:
   node: circleci/node@4.7
   docker: circleci/docker@2.1.2
+  
+jobs:
+  node-build:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          name: Run build
+          command: npm run build
 
 workflows:
-
   node-build:
     jobs:
-      docker:
-        - image: cimg/node:16.10
-      steps:
-        - checkout
-        - node/install-packages:
-            pkg-manager: npm
-        - run:
-            name: Run build
-            command: npm run build
-            
+      - node-build
   build-and-publish-docker-image:
     jobs:
       - docker/publish:
