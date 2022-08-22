@@ -24,7 +24,9 @@ workflows:
     jobs:
       - docker/publish:
           image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-          tag: $CIRCLE_BRANCH.$CIRCLE_BUILD_NUM latest # Gives a tag of the branch name to the docker image
+          tag: 
+            - $CIRCLE_BRANCH.$CIRCLE_BUILD_NUM
+            - latest
           filters:
             branches:
               only:
