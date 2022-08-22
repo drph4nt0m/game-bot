@@ -18,8 +18,7 @@ jobs:
           
   fetch-version:
     steps:
-      - run:
-          command: echo "export VERSION=$(node -p \"require('./package.json').version\")"
+      - run: echo "export VERSION=$(node -p \"require('./package.json').version\")"
 
 workflows:
   node-build:
