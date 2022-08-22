@@ -2,9 +2,10 @@ version: 2.1
 
 orbs:
   node: circleci/node@4.7
-
+  docker: circleci/docker@2.1.2
+  
 jobs:
-  build:
+  node-build:
     docker:
       - image: cimg/node:16.10
     steps:
@@ -16,7 +17,10 @@ jobs:
           command: npm run build
 
 workflows:
-  build:
+  node-build:
     jobs:
-      - build
-    
+      - node-build
+  build-and-publish-docker-image:
+    jobs:
+      - docker/publish:
+          image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
