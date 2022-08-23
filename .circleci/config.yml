@@ -12,9 +12,20 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
-      - run:
-          name: Run build
-          command: npm run build
+      - run: npm run build
+  docker-deploy:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - run: |
+          ssh root@example.com <<'ENDSSH'
+          ls
+          docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+          docker pull $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:latest
+          docker stop $CIRCLE_PROJECT_REPONAME
+          docker rm $CIRCLE_PROJECT_REPONAME
+          docker run --name=$CIRCLE_PROJECT_REPONAME --restart=always --env $DEPLOY_ENV -d $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:latest
+          ENDSSH
 
 workflows:
   node-build:
@@ -23,9 +34,13 @@ workflows:
   deploy:
     jobs:
       - docker/publish:
+          name: docker-publish
           image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
           tag: '$CIRCLE_BRANCH.$CIRCLE_BUILD_NUM,latest'
           filters:
             branches:
               only:
                 - main
+      - docker-deploy:
+          requires:
+            - docker-publish
