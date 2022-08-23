@@ -30,7 +30,7 @@ jobs:
           docker pull drph4nt0m/game-bot:latest
           docker stop game-bot
           docker rm game-bot
-          docker run --name=game-bot --restart=always -e ${DEPLOY_ENV} -d drph4nt0m/game-bot:latest
+          docker run --name=game-bot --restart=always -e "${DEPLOY_ENV}" -d drph4nt0m/game-bot:latest
           docker system prune -af
           ENDSSH
 
