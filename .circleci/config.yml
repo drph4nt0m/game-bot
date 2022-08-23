@@ -3,7 +3,12 @@ version: 2.1
 orbs:
   node: circleci/node@4.7
   docker: circleci/docker@2.1.1 # using non latest version because of https://github.com/CircleCI-Public/docker-orb/issues/136
-  
+
+main_only: &main_only
+  filters:
+    branches:
+      only: main
+
 jobs:
   node-build:
     docker:
@@ -31,14 +36,13 @@ workflows:
     jobs:
       - node-build
   deploy:
-     - when:
-        condition:
-          equal: [ main, << pipeline.git.branch >> ]
     jobs:
       - docker/publish:
+          <<: *main_only
           name: docker-publish
           image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
           tag: '$CIRCLE_BRANCH.$CIRCLE_BUILD_NUM,latest'
       - docker-deploy:
+          <<: *main_only
           requires:
             - docker-publish
