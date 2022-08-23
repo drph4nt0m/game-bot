@@ -26,12 +26,14 @@ jobs:
           TEMP: $TEMP
     steps:
       - run: |
-          echo $TEMP
           ssh -o StrictHostKeyChecking=no $SSH_USER@$HOST \<<'ENDSSH'
+          echo $TEMP
           docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+          echo $TEMP
           docker pull drph4nt0m/game-bot:latest
           docker stop game-bot
           docker rm game-bot
+          echo $TEMP
           docker run --name=game-bot --restart=always --env $DEPLOY_ENV -d drph4nt0m/game-bot:latest
           docker system prune -af
           ENDSSH
