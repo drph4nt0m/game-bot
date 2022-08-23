@@ -25,10 +25,10 @@ jobs:
       - run: |
           ssh -o StrictHostKeyChecking=no $SSH_USER@$HOST \<<'ENDSSH'
           docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-          docker pull $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:latest
-          docker stop $CIRCLE_PROJECT_REPONAME
-          docker rm $CIRCLE_PROJECT_REPONAME
-          docker run --name=$CIRCLE_PROJECT_REPONAME --restart=always --env $DEPLOY_ENV -d $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:latest
+          docker pull ${CIRCLE_BRANCH}/${$CIRCLE_PROJECT_REPONAME}:latest
+          docker stop ${CIRCLE_PROJECT_REPONAME}
+          docker rm ${CIRCLE_PROJECT_REPONAME}
+          docker run --name=${CIRCLE_PROJECT_REPONAME} --restart=always --env $DEPLOY_ENV -d ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest"
           ENDSSH
 
 workflows:
