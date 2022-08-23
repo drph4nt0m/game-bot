@@ -23,7 +23,7 @@ jobs:
       - image: cimg/node:16.10
     steps:
       - run: |
-          ssh $SSH_USER@$HOST \<<'ENDSSH'
+          ssh -o StrictHostKeyChecking=no $SSH_USER@$HOST \<<'ENDSSH'
           docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
           docker pull $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:latest
           docker stop $CIRCLE_PROJECT_REPONAME
