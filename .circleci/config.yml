@@ -31,10 +31,9 @@ workflows:
     jobs:
       - node-build
   deploy:
-    filters:
-      branches:
-        only:
-          - main
+     - when:
+        condition:
+          equal: [ main, << pipeline.git.branch >> ]
     jobs:
       - docker/publish:
           name: docker-publish
