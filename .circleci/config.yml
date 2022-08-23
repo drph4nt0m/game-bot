@@ -31,15 +31,15 @@ workflows:
     jobs:
       - node-build
   deploy:
+    filters:
+      branches:
+        only:
+          - main
     jobs:
       - docker/publish:
           name: docker-publish
           image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
           tag: '$CIRCLE_BRANCH.$CIRCLE_BUILD_NUM,latest'
-          filters:
-            branches:
-              only:
-                - main
       - docker-deploy:
           requires:
             - docker-publish
