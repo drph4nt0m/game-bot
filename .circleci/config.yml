@@ -19,7 +19,6 @@ jobs:
     steps:
       - run: |
           ssh $SSH_USER@$HOST \<<'ENDSSH'
-          ls
           docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
           docker pull $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:latest
           docker stop $CIRCLE_PROJECT_REPONAME
