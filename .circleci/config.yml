@@ -23,8 +23,10 @@ jobs:
       - image: cimg/node:16.10
         environment:
           DEPLOY_ENV: $DEPLOY_ENV
+          TEMP: $TEMP
     steps:
       - run: |
+          echo $TEMP
           ssh -o StrictHostKeyChecking=no $SSH_USER@$HOST \<<'ENDSSH'
           docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
           docker pull drph4nt0m/game-bot:latest
